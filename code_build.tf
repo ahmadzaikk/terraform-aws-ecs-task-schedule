@@ -101,7 +101,7 @@ data "aws_iam_policy_document" "codebuild" {
 
 resource "aws_iam_role_policy" "codebuild" {
   count  = var.cicd_enabled ? 1 : 0
-  role   = aws_iam_role.codebuild.*.name
+  role   = join("", aws_iam_role.codebuild.*.name)
   policy = data.aws_iam_policy_document.codebuild.json
 }
 
