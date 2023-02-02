@@ -109,7 +109,7 @@ resource "aws_codebuild_project" "this" {
   count  = var.cicd_enabled ? 1 : 0
   name         = "${var.name}-codebuild"
   description  = "Codebuild for the ECS task schedule ${var.name} app"
-  service_role = aws_iam_role.codebuild.*.arn
+  service_role = join("", aws_iam_role.codebuild.*.arn)
 
   artifacts {
     type = "CODEPIPELINE"
