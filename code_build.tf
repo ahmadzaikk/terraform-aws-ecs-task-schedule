@@ -13,7 +13,7 @@ data "aws_iam_policy_document" "assume_by_codebuild" {
 
 resource "aws_iam_role" "codebuild" {
   count  = var.cicd_enabled ? 1 : 0
-  name               = "${var.name}-codebuild"
+  name               = "${var.name}-ecs-task-schedule-codebuild"
   assume_role_policy = data.aws_iam_policy_document.assume_by_codebuild.json
 }
 
@@ -107,7 +107,7 @@ resource "aws_iam_role_policy" "codebuild" {
 
 resource "aws_codebuild_project" "this" {
   count  = var.cicd_enabled ? 1 : 0
-  name         = "${var.name}-codebuild"
+  name         = "${var.name}-ecs-task-schedule-codebuild"
   description  = "Codebuild for the ECS task schedule ${var.name} app"
   service_role = join("", aws_iam_role.codebuild.*.arn)
 
