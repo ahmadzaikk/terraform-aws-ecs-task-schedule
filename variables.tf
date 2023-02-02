@@ -72,8 +72,7 @@ variable "efs_volumes" {
   }))
 }
 
-
-variable "container_cpu" {
+variable "cpu" {
   type        = number
   default     = 256
   description = "How much CPU to give the container. 1024 is 1 CPU"
@@ -85,6 +84,17 @@ variable "container_memory" {
   description = "How much memory in megabytes to give the container"
 }
 
+variable "cpu" {
+  type        = number
+  default     = 256
+  description = "How much CPU to give the container. 1024 is 1 CPU"
+}
+
+variable "container_memory" {
+  type        = number
+  default     = 512
+  description = "How much memory in megabytes to give the container"
+}
 
 variable "privileged" {
   description = "When this parameter is true, the container is given elevated privileges on the host container instance"
