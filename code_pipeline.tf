@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "pipeline" {
   count  = var.cicd_enabled ? 1 : 0
-  bucket = "${var.name}-codepipeline-bucket"
+  bucket = "${var.name}-esc-task-schedule-codepipeline-bucket"
   tags = var.tags
 }
 
@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "assume_by_pipeline" {
 
 resource "aws_iam_role" "pipeline" {
   count  = var.cicd_enabled ? 1 : 0
-  name = "${var.name}-pipeline-ecs-service-role"
+  name = "${var.name}-pipeline-ecs-task-schedule-role"
   assume_role_policy = data.aws_iam_policy_document.assume_by_pipeline.json
 }
 
