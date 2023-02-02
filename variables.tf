@@ -78,7 +78,7 @@ variable "cpu" {
   description = "How much CPU to give the container. 1024 is 1 CPU"
 }
 
-variable "container_memory" {
+variable "memory" {
   type        = number
   default     = 512
   description = "How much memory in megabytes to give the container"
