@@ -1,4 +1,53 @@
 
+data "aws_iam_policy_document" "assume_by_ecs" {
+  statement {
+    sid     = "AllowAssumeByEcsTasks"
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "execution_role" {
+  statement {
+    sid    = "AllowECRLogging"
+    effect = "Allow"
+
+    actions = [
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:BatchGetImage",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "ecs:DescribeClusters",
+      "ssmmessages:CreateControlChannel",
+      "ssmmessages:CreateDataChannel",
+      "ssmmessages:OpenControlChannel",
+      "ssmmessages:OpenDataChannel",
+      "secretsmanager:GetSecretValue",
+      "secretsmanager:DescribeSecret",
+      "secretsmanager:List*",
+      "secretsmanager:GetResourcePolicy"
+    ]
+
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_role" "execution_role" {
+  name               = "${var.name}_ecsTaskscheduleExecutionRole"
+  assume_role_policy = data.aws_iam_policy_document.assume_by_ecs.json
+}
+
+resource "aws_iam_role_policy" "execution_role" {
+  role   = aws_iam_role.execution_role.name
+  policy = data.aws_iam_policy_document.execution_role.json
+}
 ## Cloudwatch event role
 
 resource "aws_iam_role" "scheduled_task_cloudwatch" {
