@@ -19,11 +19,11 @@ variable "enabled" {
   description = "Set to `false` to prevent the module from creating any resources"
   type        = bool
 }
-variable "task_definition_arn" {
-  description = "name, to be used as prefix for all resource names"
-  type        = string
+#variable "task_definition_arn" {
+ # description = "name, to be used as prefix for all resource names"
+  #type        = string
  
-}
+#}
 variable "schedule_expression" {
   description = "(Optional) The scheduling expression. For example, cron(0 20 * * ? *) or rate(5 minutes). At least one of event_rule_schedule_expression or event_rule_event_pattern is required. Can only be used on the default event bus."
   default     = "cron(0 20 * * ? *)"
