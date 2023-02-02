@@ -5,8 +5,8 @@ resource "aws_s3_bucket" "pipeline" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
-  count  = var.cicd_enabled ? 1 : 0
-  bucket = aws_s3_bucket.pipeline.*.id
+  #count  = var.cicd_enabled ? 1 : 0
+  bucket = join("",aws_s3_bucket.pipeline.*.id)
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -15,10 +15,10 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
-  count  = var.cicd_enabled ? 1 : 0
+  #count  = var.cicd_enabled ? 1 : 0
   block_public_acls       = true
   block_public_policy     = true
-  bucket                  = aws_s3_bucket.pipeline.*.id
+  bucket                  = join("",aws_s3_bucket.pipeline.*.id)
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
@@ -127,14 +127,14 @@ data "aws_iam_policy_document" "pipeline" {
 
 resource "aws_iam_role_policy" "pipeline" {
   count  = var.cicd_enabled ? 1 : 0
-  role = aws_iam_role.pipeline.*.name
+  role = join("", aws_iam_role.pipeline.*.name)
   policy = data.aws_iam_policy_document.pipeline.json
 }
 
 resource "aws_codepipeline" "this" {
   count  = var.cicd_enabled ? 1 : 0
   name = "${var.name}-task-schedule-pipeline"
-  role_arn = aws_iam_role.pipeline.*.arn
+  role_arn = join("", aws_iam_role.pipeline.*.arn)
 
   artifact_store {
     location = "${var.name}-codepipeline-bucket"
