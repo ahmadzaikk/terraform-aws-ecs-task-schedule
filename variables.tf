@@ -1,13 +1,12 @@
 variable "name" {
   description = "name, to be used as prefix for all resource names"
   type        = string
-  default     = "bb"
 }
 
 variable "cluster_arn" {
   description = "name, to be used as prefix for all resource names"
   type        = string
-  default     = "arn:aws:ecs:us-west-2:497286016891:cluster/bb-qa-cluster"
+
 }
 
 variable "cicd_enabled" {
@@ -23,7 +22,7 @@ variable "enabled" {
 variable "task_definition_arn" {
   description = "name, to be used as prefix for all resource names"
   type        = string
-  default     = "arn:aws:ecs:us-west-2:497286016891:task-definition/kk-test:5"
+ 
 }
 variable "schedule_expression" {
   description = "(Optional) The scheduling expression. For example, cron(0 20 * * ? *) or rate(5 minutes). At least one of event_rule_schedule_expression or event_rule_event_pattern is required. Can only be used on the default event bus."
@@ -49,13 +48,12 @@ variable "tags" {
 variable "security_groups" {
   description = "The security groups to attach to the ecs. e.g. [\"sg-edcd9784\",\"sg-edcd9785\"]"
   type        = list(string)
-  default     = ["sg-0ddc56abba3b2c072"]
 }
 
 variable "subnets" {
   description = "A list of subnets to associate with the ecs . e.g. ['subnet-1a2b3c4d','subnet-1a2b3c4e','subnet-1a2b3c4f']"
   type        = list(string)
-  default     = ["subnet-0ced6ea0387789f95", "subnet-0e2e9ced13c991a3e"]
+ 
 }
 
 variable "volumes" {
