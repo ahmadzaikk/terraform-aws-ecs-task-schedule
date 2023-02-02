@@ -79,6 +79,7 @@ resource "aws_ecs_task_definition" "default" {
   count = var.enabled ? 1 : 0
   family = join("-", [var.name, "task"]) # Naming our first task
   execution_role_arn = aws_iam_role.execution_role.arn
+  task_role_arn  = aws_iam_role.execution_role.arn
   container_definitions = var.container_definitions
   cpu = var.cpu
   memory = var.memory
