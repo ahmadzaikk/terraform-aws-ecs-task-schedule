@@ -113,6 +113,11 @@ variable "sidecar_containers" {
   default     = []
 }
 
+variable "container_definitions" {
+  type        = string
+  description = "A list of valid container definitions provided as a single valid JSON document."
+}
+
 
 ## CodeBuild
 
