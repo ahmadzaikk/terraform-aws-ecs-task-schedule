@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "pipeline" {
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
-  #count  = var.cicd_enabled ? 1 : 0
+  count  = var.cicd_enabled ? 1 : 0
   bucket = join("",aws_s3_bucket.pipeline.*.id)
   rule {
     apply_server_side_encryption_by_default {
@@ -15,7 +15,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
-  #count  = var.cicd_enabled ? 1 : 0
+  count  = var.cicd_enabled ? 1 : 0
   block_public_acls       = true
   block_public_policy     = true
   bucket                  = join("",aws_s3_bucket.pipeline.*.id)
