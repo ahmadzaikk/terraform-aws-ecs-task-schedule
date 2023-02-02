@@ -24,6 +24,11 @@ variable "schedule_expression" {
   description = "(Optional) The scheduling expression. For example, cron(0 20 * * ? *) or rate(5 minutes). At least one of event_rule_schedule_expression or event_rule_event_pattern is required. Can only be used on the default event bus."
   default     = "cron(0 20 * * ? *)"
 }
+variable "privileged_mode" {
+  default     = true
+  description = "Set to `false` to prevent Database accessibility"
+  type        = bool
+}
 variable "assign_public_ip" {
   description = "Enables container insights if true"
   type        = bool
