@@ -15,6 +15,11 @@ variable "cicd_enabled" {
   description = "Set to `false` to prevent the module from creating any resources"
   type        = bool
 }
+variable "enabled" {
+  default     = true
+  description = "Set to `false` to prevent the module from creating any resources"
+  type        = bool
+}
 variable "task_definition_arn" {
   description = "name, to be used as prefix for all resource names"
   type        = string
