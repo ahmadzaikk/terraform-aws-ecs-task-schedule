@@ -89,7 +89,7 @@ resource "aws_cloudwatch_event_target" "cloudwatch_event_target" {
 
   ecs_target {
     task_count = 1
-    task_definition_arn = aws_ecs_task_definition.default.*.arn
+    task_definition_arn = join("", aws_ecs_task_definition.default.*.arn)
     launch_type         = "FARGATE"
     network_configuration {
       subnets          = var.subnets
