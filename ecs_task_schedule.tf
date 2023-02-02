@@ -52,60 +52,15 @@ resource "aws_cloudwatch_event_target" "cloudwatch_event_target" {
 
 
 ### Task Definition
-locals {
-
-  container_definition = merge({
-    "name"      = var.name
-    "image"     = var.image
-    "essential" = true
-    "cpu"       = var.container_cpu
-    "memory"    = var.container_memory
-    # "portMappings" = local.task_container_port_mappings
-    # "stopTimeout"  = var.stop_timeout
-    # "command"      = var.task_container_command
-    # "environment"  = var.environment
-    # "secrets"      = var.secrets
-    # "MountPoints"  = local.task_container_mount_points
-    # "linuxParameters"   = var.linux_parameters
-    "readonlyRootFilesystem" = var.readonlyRootFilesystem
-    # "logConfiguration" = {
-    # "logDriver" = "awslogs"
-    # "options"   = local.log_configuration_options
-    # }
-    "privileged" : var.privileged
-  }, )
-}
-resource "aws_ecs_task_definition" "this" {
-  family                   = join("-", [var.name, "scheduled", "task"]) # Naming our first task
-  tags                     = var.tags
-  cpu                      = var.container_cpu
-  memory                   = var.container_memory
-  requires_compatibilities = ["FARGATE"] # Stating that we are using ECS Fargate
-  network_mode             = "awsvpc"    # Using awsvpc as our network mode as this is required for Fargate
-  execution_role_arn       = aws_iam_role.scheduled_task_cloudwatch.arn
-  task_role_arn            = aws_iam_role.scheduled_task_cloudwatch.arn
-  dynamic "volume" {
-    for_each = var.efs_volumes
-    content {
-      name = volume.value["name"]
-      efs_volume_configuration {
-        file_system_id     = volume.value["file_system_id"]
-        root_directory     = volume.value["root_directory"]
-        transit_encryption = "ENABLED"
-        authorization_config {
-          access_point_id = volume.value["access_point_id"]
-          iam             = "ENABLED"
-        }
-      }
-    }
-
-  }
-  dynamic "volume" {
-    for_each = var.volumes
-    content {
-      name = volume.value["name"]
-    }
-  }
-  container_definitions = jsonencode(concat([local.container_definition], var.sidecar_containers))
+resource "aws_ecs_task_definition" "default" {
+  count = var.enabled ? 1 : 0
+  family = join("-", [var.name, "task"]) # Naming our first task
+  execution_role_arn = aws_iam_role.execution_role.arn
+  container_definitions = var.container_definitions
+  cpu = var.cpu
+  memory = var.memory
+  requires_compatibilities = ["FARGATE"]
+  network_mode = "awsvpc"
+  tags = var.tags
 }
 
