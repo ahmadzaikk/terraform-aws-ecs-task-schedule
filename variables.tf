@@ -8,7 +8,11 @@ variable "cluster_arn" {
   type        = string
 
 }
-
+variable "stage" {
+  description = "A list of stage"
+  type        = list(map(string))
+  default     = []
+}
 variable "cicd_enabled" {
   default     = true
   description = "Set to `false` to prevent the module from creating any resources"
